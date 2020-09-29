@@ -1,16 +1,21 @@
 package com.currency.exchange.controller;
 
+import com.currency.exchange.client.FixerRestClient;
 import io.swagger.annotations.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/exchange")
 @Api(tags = {"Exchange"})
 @SwaggerDefinition(tags = {
         @Tag(name = "Exchange", description = "Exchange currency pairs and conversion")
 })
 public class ExchangeController {
+
+    private final FixerRestClient fixerRestClient;
 
     @ApiOperation(value = "Exchange rate")
     @ApiResponses(value = {
@@ -22,9 +27,9 @@ public class ExchangeController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
 
     public ResponseEntity getMethod(@RequestParam String base,
-                                    @RequestParam String symbol) {
+                                    @RequestParam String symbols) {
 
-        return null;
+        return ResponseEntity.ok(fixerRestClient.getExchangeRate(base, symbols));
     }
 
 }
