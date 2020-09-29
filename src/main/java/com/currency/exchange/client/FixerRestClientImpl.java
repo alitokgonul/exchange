@@ -1,6 +1,7 @@
 package com.currency.exchange.client;
 
 import com.currency.exchange.controller.model.LatestRateDto;
+import com.currency.exchange.exception.FixerClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,7 @@ public class FixerRestClientImpl implements FixerRestClient {
 
         } catch (Exception e) {
             log.error("error while getting fixer latest api with base : {} and symbols :", base, symbols);
+            throw new FixerClientException("A problem occurred in the fixer client service.");
         }
 
 
