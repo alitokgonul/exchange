@@ -30,4 +30,5 @@ public class ConvertCurrencyDto {
     @DecimalMin("0.0")
     @NotNull
     private BigDecimal amount;
+
 }

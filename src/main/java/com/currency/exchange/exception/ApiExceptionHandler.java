@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.validation.ConstraintViolationException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.List;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value= MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleException(MethodArgumentNotValidException e) {
         List<String> errors = new ArrayList<>(e.getBindingResult().getFieldErrors().size());
 
@@ -28,18 +26,24 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(value = FixerClientException.class)
     public ResponseEntity<Object> handleFixerClientException(FixerClientException e) {
-        HttpStatus status = HttpStatus.FAILED_DEPENDENCY;
 
-        ApiException apiException = ApiException.builder()
-                .message(e.getMessage())
+        return new ResponseEntity<>(createApiException(e, HttpStatus.FAILED_DEPENDENCY), HttpStatus.FAILED_DEPENDENCY);
+    }
+
+    @ExceptionHandler(value = BadRequestException.class)
+    public ResponseEntity<Object> handleBadRequestException(BadRequestException e) {
+
+        return new ResponseEntity<>(createApiException(e, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+    }
+
+    private ApiException createApiException(Exception exception, HttpStatus status) {
+        return ApiException.builder()
+                .message(exception.getMessage())
                 .httpStatus(status)
                 .timestamp(ZonedDateTime.now(ZoneId.of("GMT+3")))
                 .build();
-
-        return new ResponseEntity<>(apiException, status);
     }
 
 }

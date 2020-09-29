@@ -2,9 +2,11 @@ package com.currency.exchange.controller;
 
 import com.currency.exchange.controller.model.ConvertCurrencyDto;
 import com.currency.exchange.controller.model.LatestRateDto;
+import com.currency.exchange.exception.BadRequestException;
 import com.currency.exchange.service.ExchangeService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +33,8 @@ public class ExchangeController {
     })
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
 
-    public ResponseEntity<LatestRateDto> getMethod(@RequestParam String base,
-                                                   @RequestParam String symbols) {
+    public ResponseEntity<LatestRateDto> getExchangeRate(@RequestParam String base,
+                                                         @RequestParam String symbols) {
 
         return ResponseEntity.ok(exchangeService.getExchangeRate(base, symbols));
     }
@@ -45,9 +47,8 @@ public class ExchangeController {
             @ApiResponse(code = 500, message = "Currencies could not be converted.")
     })
     @RequestMapping(value = "convert", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity convert(@RequestBody @Valid ConvertCurrencyDto dto) {
-        exchangeService.convertCurrency(dto);
-        return ResponseEntity.ok(null);
+    public ResponseEntity convert(@RequestBody @Valid ConvertCurrencyDto convertCurrencyDto) {
+        return ResponseEntity.ok(exchangeService.convertCurrency(convertCurrencyDto));
     }
 
     @ApiOperation(value = "List Conversions")
@@ -57,11 +58,14 @@ public class ExchangeController {
             @ApiResponse(code = 500, message = "The conversions could not be retrieved.")
     })
     @RequestMapping(value = "list-conversions", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity listConversions(@RequestParam Long transactionId,
-                                          @RequestParam Date transactionDate) {
+    public ResponseEntity listConversions(@RequestParam(required = false) Long transactionId,
+                                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date transactionDate) {
 
-        exchangeService.listConversions(transactionId, transactionDate);
-        return ResponseEntity.ok(null);
+        if (transactionId == null && transactionDate == null) {
+            throw new BadRequestException("at least one of the inputs shall be provided.");
+        }
+
+        return ResponseEntity.ok(exchangeService.listConversions(transactionId, transactionDate));
     }
 
 }
