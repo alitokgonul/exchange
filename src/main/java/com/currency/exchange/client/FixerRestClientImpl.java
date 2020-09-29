@@ -21,7 +21,7 @@ public class FixerRestClientImpl implements FixerRestClient {
 
     private final RestTemplate restTemplate;
 
-    public LatestRateDto getExchangeRate(String base, String symbols) {
+    public LatestRateDto getLatest(String base, String symbols) {
         log.info("fixer latest api is called");
         LatestRateDto latestRateDto = null;
         try {
@@ -31,6 +31,7 @@ public class FixerRestClientImpl implements FixerRestClient {
                     .queryParam("symbols", symbols);
 
             latestRateDto = restTemplate.getForObject(builder.toUriString(), LatestRateDto.class);
+
         } catch (Exception e) {
             log.error("error while getting fixer latest api with base : {} and symbols :", base, symbols);
         }

@@ -16,14 +16,16 @@ public class LatestRateDto {
 
     @ApiModelProperty(notes = "Returns true or false depending on whether or not your API request has succeeded.")
     private boolean success;
-
+    
     @ApiModelProperty(notes = "Returns the exact date and time (UNIX time stamp) the given rates were collected.")
     private Long timestamp;
 
     @ApiModelProperty(notes = "Returns the three-letter currency code of the base currency used for this request.")
     private String base;
 
+    @ApiModelProperty(notes = "Returns the date for which latest rates were requested.")
     private Date date;
 
+    @ApiModelProperty(notes = "Returns exchange rate data for the currencies you have requested.")
     private Map<String, BigDecimal> rates;
 }
