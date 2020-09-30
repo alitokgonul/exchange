@@ -7,7 +7,6 @@ import com.currency.exchange.controller.model.LatestRateDto;
 import com.currency.exchange.controller.model.TransactionDto;
 import com.currency.exchange.entity.Conversion;
 import com.currency.exchange.entity.Transaction;
-import com.currency.exchange.exception.BadRequestException;
 import com.currency.exchange.repositories.ConversionRepository;
 import com.currency.exchange.repositories.TransactionRepository;
 import org.junit.jupiter.api.Test;
