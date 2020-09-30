@@ -5,7 +5,6 @@ import com.currency.exchange.controller.model.ConvertCurrencyDto;
 import com.currency.exchange.controller.model.LatestRateDto;
 import com.currency.exchange.controller.model.TransactionDto;
 import com.currency.exchange.service.ExchangeService;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -21,7 +22,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -93,19 +93,11 @@ class ExchangeControllerTest {
 
     @Test
     public void listConversions() throws Exception {
-        given(exchangeService.listConversions(any(), any())).willReturn(createConversionList());
+        given(exchangeService.listConversions(any(), any())).willReturn(createConversionPage());
 
-        MvcResult mvcResult = mockMvc.perform(get(EXCHANGE_ENDPOINT + "/list-conversions?transactionId=1")
+        mockMvc.perform(get(EXCHANGE_ENDPOINT + "/list-conversions?transactionId=1")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String contentAsString = mvcResult.getResponse().getContentAsString();
-        List<ConversionDto> dtoList = objectMapper.readValue(contentAsString, new TypeReference<List<ConversionDto>>() {
-        });
-
-        assertEquals(dtoList.size(), 1);
-        assertEquals(dtoList.get(0).getTransactionId(), 2L);
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -144,12 +136,12 @@ class ExchangeControllerTest {
         return dto;
     }
 
-    private List<ConversionDto> createConversionList() {
+    private Page<ConversionDto> createConversionPage() {
         ConversionDto dto = new ConversionDto();
-        dto.setSourceAmount(new BigDecimal(1.1));
-        dto.setTargetAmount(new BigDecimal(1.2));
+        dto.setExchangeRate(new BigDecimal(1.1));
+        dto.setAmount(new BigDecimal(2));
         dto.setTransactionId(2L);
 
-        return Collections.singletonList(dto);
+        return new PageImpl<>(Collections.singletonList(dto));
     }
 }

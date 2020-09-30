@@ -18,4 +18,5 @@ public class CurrencyExchangeApplication {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
 }

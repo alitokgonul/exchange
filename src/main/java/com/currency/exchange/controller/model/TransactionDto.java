@@ -12,10 +12,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class TransactionDto {
 
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Transaction Id")
     private Long transactionId;
 
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "The amount to be converted.")
     private BigDecimal amount;
 
 }

@@ -4,9 +4,9 @@ import com.currency.exchange.controller.model.ConversionDto;
 import com.currency.exchange.controller.model.ConvertCurrencyDto;
 import com.currency.exchange.controller.model.LatestRateDto;
 import com.currency.exchange.controller.model.TransactionDto;
+import org.springframework.data.domain.Page;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 public interface ExchangeService {
 
@@ -14,5 +14,5 @@ public interface ExchangeService {
 
     TransactionDto convertCurrency(ConvertCurrencyDto convertCurrencyDto);
 
-    List<ConversionDto> listConversions(Long transactionId, Date transactionDate);
+    Page<ConversionDto> listConversions(Long transactionId, LocalDate transactionDate);
 }

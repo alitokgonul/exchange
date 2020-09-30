@@ -6,28 +6,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConversionDto {
 
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Transaction id")
     private Long transactionId;
 
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Returns the three-letter currency code of the source currency used for this request.")
     private String sourceCurrency;
 
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Returns the three-letter currency code of the target currency used for this request.")
     private String targetCurrency;
 
-    @ApiModelProperty(notes = "")
-    private BigDecimal sourceAmount;
+    @ApiModelProperty(notes = "Returns exchange rate data for the currency you have requested.")
+    private BigDecimal exchangeRate;
 
-    @ApiModelProperty(notes = "")
-    private BigDecimal targetAmount;
+    @ApiModelProperty(notes = "The amount to be converted.")
+    private BigDecimal amount;
 
-    @ApiModelProperty(notes = "")
-    private String transationDate;
+    @ApiModelProperty(notes = "Transaction date")
+    private LocalDate transationDate;
 
 }
