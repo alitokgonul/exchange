@@ -93,7 +93,7 @@ class ExchangeControllerTest {
 
     @Test
     public void listConversions() throws Exception {
-        given(exchangeService.listConversions(any(), any())).willReturn(createConversionPage());
+        given(exchangeService.listConversions(any(), any(), any(), any())).willReturn(createConversionPage());
 
         mockMvc.perform(get(EXCHANGE_ENDPOINT + "/list-conversions?transactionId=1")
                 .accept(MediaType.APPLICATION_JSON))

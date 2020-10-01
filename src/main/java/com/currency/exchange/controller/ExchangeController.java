@@ -61,13 +61,15 @@ public class ExchangeController {
     })
     @RequestMapping(value = "list-conversions", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Page<ConversionDto>> listConversions(@RequestParam(required = false) Long transactionId,
-                                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate transactionDate) {
+                                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate transactionDate,
+                                                               @RequestParam(defaultValue = "0") Integer page,
+                                                               @RequestParam(defaultValue = "10") Integer size) {
 
         if (transactionId == null && transactionDate == null) {
             throw new BadRequestException("at least one of the inputs shall be provided.");
         }
 
-        return ResponseEntity.ok(exchangeService.listConversions(transactionId, transactionDate));
+        return ResponseEntity.ok(exchangeService.listConversions(transactionId, transactionDate, page, size));
     }
 
 }

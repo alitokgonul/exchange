@@ -67,8 +67,8 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
-    public Page<ConversionDto> listConversions(Long transactionId, LocalDate transactionDate) {
-        Pageable pageable = PageRequest.of(0, 10);
+    public Page<ConversionDto> listConversions(Long transactionId, LocalDate transactionDate, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
         Page<Conversion> conversionPage;
 
         if (transactionId == null) {
@@ -89,6 +89,7 @@ public class ExchangeServiceImpl implements ExchangeService {
         dto.setTransationDate(conversion.getCreatedDate());
         dto.setSourceCurrency(conversion.getTransaction().getSourceCurrency());
         dto.setTargetCurrency(conversion.getTransaction().getTargetCurrency());
+        dto.setAmount(conversion.getAmount());
 
         return dto;
     }

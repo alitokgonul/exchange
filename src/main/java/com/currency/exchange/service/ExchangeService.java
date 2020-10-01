@@ -14,5 +14,5 @@ public interface ExchangeService {
 
     TransactionDto convertCurrency(ConvertCurrencyDto convertCurrencyDto);
 
-    Page<ConversionDto> listConversions(Long transactionId, LocalDate transactionDate);
+    Page<ConversionDto> listConversions(Long transactionId, LocalDate transactionDate, Integer page, Integer size);
 }
