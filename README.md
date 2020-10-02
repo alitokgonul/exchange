@@ -14,4 +14,5 @@ Foreign exchange application
 |GET| /api/v1/exchange/list-conversions| 	List Conversions|
 
 swagger-url -> http://localhost:8080/swagger-ui.html|
+
 h2-console  -> http://localhost:8080/h2-console
