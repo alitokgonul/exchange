@@ -71,13 +71,7 @@ public class ExchangeServiceImpl implements ExchangeService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Conversion> conversionPage;
 
-        if (transactionId == null) {
-            conversionPage = conversionRepository.findByCreatedDate(transactionDate, pageable);
-        } else if (transactionDate == null)  {
-            conversionPage = conversionRepository.findByTransaction_Id(transactionId, pageable);
-        } else {
-            conversionPage = conversionRepository.findByTransaction_IdAndCreatedDate(transactionId, transactionDate, pageable);
-        }
+        conversionPage = conversionRepository.filterConversions(transactionId, transactionDate, pageable);
 
         return conversionPage.map(this::conversionToDto);
     }

@@ -42,7 +42,6 @@ class ExchangeServiceImplTest {
     @InjectMocks
     private ExchangeServiceImpl exchangeService;
 
-
     @Test
     void getExchangeRate() {
         given(fixerRestClient.getLatest(any(), any())).willReturn(createLatestRateDto());
@@ -106,30 +105,10 @@ class ExchangeServiceImplTest {
     }
 
     @Test
-    void listConversions_date_id() {
-        given(conversionRepository.findByTransaction_IdAndCreatedDate(any(), any(), any())).willReturn(createConversionPage());
+    void listConversions() {
+        given(conversionRepository.filterConversions(any(), any(), any())).willReturn(createConversionPage());
 
         Page<ConversionDto> conversionDtoPage = exchangeService.listConversions(1L, LocalDate.now(),0, 10);
-
-        assertEquals(conversionDtoPage.getTotalElements(), 1);
-        assertEquals(conversionDtoPage.getContent().get(0).getTransactionId(), 1L);
-    }
-
-    @Test
-    void listConversions_id() {
-        given(conversionRepository.findByTransaction_Id(any(), any())).willReturn(createConversionPage());
-
-        Page<ConversionDto> conversionDtoPage = exchangeService.listConversions(1L, null,0, 10);
-
-        assertEquals(conversionDtoPage.getTotalElements(), 1);
-        assertEquals(conversionDtoPage.getContent().get(0).getTransactionId(), 1L);
-    }
-
-    @Test
-    void listConversions_date() {
-        given(conversionRepository.findByCreatedDate(any(), any())).willReturn(createConversionPage());
-
-        Page<ConversionDto> conversionDtoPage = exchangeService.listConversions(null, LocalDate.now(),0, 10);
 
         assertEquals(conversionDtoPage.getTotalElements(), 1);
         assertEquals(conversionDtoPage.getContent().get(0).getTransactionId(), 1L);

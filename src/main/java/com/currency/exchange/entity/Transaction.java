@@ -1,17 +1,15 @@
 package com.currency.exchange.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@ToString(exclude = "conversions")
 @Entity
 @Table(name = "transactions")
 public class Transaction {
